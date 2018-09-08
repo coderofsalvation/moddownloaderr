@@ -6,6 +6,14 @@ This is a quick way to get a huge mod library on your computer.
 Based on the modarchive script by Fernando Sancho AKA 'toptnc'
 by Justin Wierbonski aka Demonic Sweaters
 
+Requeired packages:
+mikmod, opencp or audacious
+curl
+html2text
+sed
+grep
+awk
+
 
 ```
 Mod Downloader instructions:
