@@ -16,7 +16,6 @@
 #  Modifications by Demonic Sweaters www.demonicsweaters.com
 #  Edits by Milk - https://github.com/mxmilkb/moddownloader
 #
-#
 #  This script is released under the terms of the GNU LGPL v3.0 license
 #
 ###############################################################################
@@ -33,7 +32,7 @@ usage: $0 [options]
 
 Mod Downloader options:
   -h		           Show this help message
-  -n <number> 	   (REQUIRED) Number of tracks to download
+  -n <number> 	   Number of tracks to download
   -s <section> 	   Download from selected section: Can be one of this
        uploads     This is a list of the recent member upload activity
 
@@ -57,12 +56,9 @@ Mod Downloader options:
    -m <module>     Search in module database (Title and Filename)
    -g <genre>      Download a specific genre: go to modarchive.org genres page*.
                    Hover your mouse over the genre and look for the number in
-                   the link address.) Genre will also ask you for a page number.
-                   This is refering to the search results page. Leave blank for
-                   page 1, then run the script again and enter 2, 3, 4, etc...
-                   if you want to download the rest of the pages.
+                   the link address.)
 
-                    * http://modarchive.org/index.php?request=view_genres
+                   * http://modarchive.org/index.php?request=view_genres
 
 Hint: Use + symbol instead blankspaces in search strings.
 
@@ -192,9 +188,9 @@ do
       ;;
 
     g)
-      echo -n "enter the page number for genre download and press [enter]: "
-      read GENREPAGE
-      echo -n "where do you want to save the mods? [enter full path]: "
+      #echo -n "enter the page number for genre download and press [enter]: "
+      #read GENREPAGE
+      echo -n "where do you want to save the mods? [enter full path. leave blank for current directory]: "
       read MODPATH
       if [ -z $MODPATH ]; then MODPATH="."; fi
       # MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
