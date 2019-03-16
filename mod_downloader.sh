@@ -86,8 +86,7 @@ create_playlist()
   PLAYLIST=""
   PLAYLISTFILE=/tmp/modarchive/modarchive.url
 
-  if [ -z $PAGES ];
-  then
+  if [ -z $PAGES ]; then
     PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
   else
     echo "Need to download ${PAGES} pages of results. This may take a while..."
@@ -100,14 +99,13 @@ create_playlist()
       PLAYLIST=$(printf "${PLAYLIST}\n${LIST}")
     done
     echo ""
-fi
-[ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive;
-if [ -z $SHUFFLE];
-then
-  echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
-else
-  echo "$PLAYLIST" | sed '/^$/d' | awk 'BEGIN { srand() } { print rand() "\t" $0 }' | sort -n | cut -f2- > $PLAYLISTFILE
-fi
+  fi
+  [ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive;
+  if [ -z $SHUFFLE]; then
+    echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
+  else
+    echo "$PLAYLIST" | sed '/^$/d' | awk 'BEGIN { srand() } { print rand() "\t" $0 }' | sort -n | cut -f2- > $PLAYLISTFILE
+  fi
 }
 
 pages_parse()
@@ -222,54 +220,47 @@ do
   esac
 done
 
-if [ -z $MODURL ];
-then
+if [ -z $MODURL ]; then
   usage
   exit 1
-      fi
+fi
 
-      echo "Starting Modarchive Downloader"
-      LOOP="true"
+echo "Starting Modarchive Downloader"
+LOOP="true"
 
-      if [ -z $RANDOMSONG ];
-      then
-        echo "Creating playlist"
-        create_playlist
-        TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
-        echo "Your query returned ${TRACKSFOUND} results"
-      fi
+if [ -z $RANDOMSONG ]; then
+  echo "Creating playlist"
+  create_playlist
+  TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
+  echo "Your query returned ${TRACKSFOUND} results"
+fi
 
-      COUNTER=1
-      while [ $LOOP = "true" ]; do
-        if [ -z $RANDOMSONG ];
-        then
-          SONGURL=$(cat ${PLAYLISTFILE} | head -n ${COUNTER} | tail -n 1)
-          let COUNTER=$COUNTER+1
-          if [ $TRACKSNUM -gt 0 ];
-          then
-            if [ $COUNTER -gt $TRACKSNUM ] || [ $COUNTER -gt $TRACKSFOUND ];
-            then
-              LOOP="false"
-      fi
-    elif [ $COUNTER -gt $TRACKSFOUND ];
-    then
-      LOOP="false"
-      fi
-    else
-      SONGURL=$(wget -o /dev/null -O - "$MODURL" | sed 's/href=\"/href=\"\n/g' | sed 's/\">/\n\">/g' | grep downloads.php | head -n 1);
-      let COUNTER=$COUNTER+1
-      if [ $TRACKSNUM -gt 0 ] && [ $COUNTER -gt $TRACKSNUM ];
-      then
+COUNTER=1
+while [ $LOOP = "true" ]; do
+  if [ -z $RANDOMSONG ]; then
+    SONGURL=$(cat ${PLAYLISTFILE} | head -n ${COUNTER} | tail -n 1)
+    let COUNTER=$COUNTER+1
+    if [ $TRACKSNUM -gt 0 ]; then
+      if [ $COUNTER -gt $TRACKSNUM ] || [ $COUNTER -gt $TRACKSFOUND ]; then
         LOOP="false"
       fi
-      fi
+    elif [ $COUNTER -gt $TRACKSFOUND ]; then
+      LOOP="false"
+    fi
+  else
+    SONGURL=$(wget -o /dev/null -O - "$MODURL" | sed 's/href=\"/href=\"\n/g' | sed 's/\">/\n\">/g' | grep downloads.php | head -n 1);
+    let COUNTER=$COUNTER+1
+    if [ $TRACKSNUM -gt 0 ] && [ $COUNTER -gt $TRACKSNUM ]; then
+      LOOP="false"
+    fi
+  fi
 
-      MODFILE=$(echo "$SONGURL" | cut -d "#" -f 2)
-      if [ ! -e "${MODPATH}/${MODFILE}" ]; then
-        echo "Downloading $SONGURL to $MODPATH/$MODFILE";
-        wget -o /dev/null -O "${MODPATH}/${MODFILE}" "$SONGURL";
-      fi
-      #if [ -e "${MODPATH}/${MODFILE}" ];then
-      # "${MODPATH}/${MODFILE}"
-      #fi
-    done
+  MODFILE=$(echo "$SONGURL" | cut -d "#" -f 2)
+  if [ ! -e "${MODPATH}/${MODFILE}" ]; then
+    echo "Downloading $SONGURL to $MODPATH/$MODFILE";
+    wget -o /dev/null -O "${MODPATH}/${MODFILE}" "$SONGURL";
+  fi
+  #if [ -e "${MODPATH}/${MODFILE}" ];then
+  # "${MODPATH}/${MODFILE}"
+  #fi
+done
