@@ -73,8 +73,10 @@ Mod Downloader options:
                     * http://modarchive.org/index.php?request=view_genres
 
 Hint: Use + symbol instead blankspaces in search strings.
-Hint 2: if you're running Mac OSX, you must first run this command before the script will run: function _wget() { curl "${1}" -o $(basename "${1}") ; };
-alias wget='_wget'
+
+Hint 2: if you're running Mac OSX, you must first run this command before the
+script will run:
+  function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
 
 EOF
 }
@@ -111,6 +113,7 @@ fi
 pages_parse()
 {
   PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "pages=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
+  echo $PAGES
 }
 
 while getopts "hrm:a:s:n:p:g:" OPTION
@@ -205,8 +208,11 @@ do
       echo -n "where do you want to save the mods? [enter full path]: "
       read MODPATH
       if [ -z $MODPATH ]; then MODPATH="."; fi
-      MODURL="http://lite.modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
-      PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
+      MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
+      pages_parse
+      echo $MODPATH
+      echo $MODURL
+      echo $PAGES
       ;;
 
     ?)
