@@ -1,4 +1,4 @@
-`mod_downloader.sh` is a small script that downloads mod files from modarchive.org. You can select the amount of files you want to download and use various search criteria as well as save locations for each download session. This is a quick way to get a huge mod library on your computer.
+`mod_downloader.sh` is a bash script that downloads module (.mod, .xm, .it, .s3m) files from modarchive.org. You can select the amount of files you want to download and use various search criteria as well as save locations for each download session. This is a quick way to get a huge mod library on your computer.
 
 Based on the modarchive script by Fernando Sancho AKA 'toptnc', modifications by Justin Wierbonski aka Demonic Sweaters, and edits by Milk - https://github.com/mxmilkb/moddownloader
 
