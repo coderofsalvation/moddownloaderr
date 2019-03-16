@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ###############################################################################
 # 			 MODARCHIVE.ORG DOWNLOADER
 #
@@ -18,7 +17,7 @@
 #  edits by Milk - https://github.com/mxmilkb/moddownloaderv
 #
 ###############################################################################
-#                        MODARCHIVE JUKEBOX SCRIPT
+#        MODARCHIVE JUKEBOX SCRIPT
 #
 #  Made by: Fernando Sancho AKA 'toptnc'
 #  email: toptnc@gmail.com
@@ -42,7 +41,7 @@ usage()
 usage: $0 [options]
 
 Mod Downloader options:
-  -h		   Show this help message
+  -h		           Show this help message
   -n <number> 	   (REQUIRED) Number of tracks to download
   -s <section> 	   Download from selected section: Can be one of this 
        uploads     This is a list of the recent member upload activity
@@ -63,16 +62,16 @@ Mod Downloader options:
 
        random      Ramdom module from entire archive
 
-   -a <artist>  Search in artist database
-   -m <module>  Search in module database (Title and Filename)
-   -g <genre>   Download a specific genre: go to modarchive.org genres page*. Hover
-   		your mouse over the genre and look for the number in the link address.)
-		Genre will also ask you for a page number. This is refering to the
-		search results page. Leave blank for page 1, then run the script 
-		again and enter 2, 3, 4, etc... if you want to download the rest 
-		of the pages.
+   -a <artist>     Search in artist database
+   -m <module>     Search in module database (Title and Filename)
+   -g <genre>      Download a specific genre: go to modarchive.org genres page*.
+                   Hover your mouse over the genre and look for the number in
+                   the link address.) Genre will also ask you for a page number.
+                   This is refering to the search results page. Leave blank for
+                   page 1, then run the script again and enter 2, 3, 4, etc...
+                   if you want to download the rest of the pages.
 		
-		* http://modarchive.org/index.php?request=view_genres
+                		* http://modarchive.org/index.php?request=view_genres
 
 Hint: Use + symbol instead blankspaces in search strings.
 Hint 2: if you're running Mac OSX, you must first run this command before the script will run: function _wget() { curl "${1}" -o $(basename "${1}") ; };
@@ -101,7 +100,7 @@ create_playlist()
         done
 	echo ""
     fi
-    if [ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive
+    if [ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive; fi
     if [ -z $SHUFFLE];
     then
 	echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
