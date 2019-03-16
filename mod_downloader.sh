@@ -110,8 +110,7 @@ create_playlist()
 
 pages_parse()
 {
-  PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "pages=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
-  echo $PAGES
+  PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
 }
 
 while getopts "hrm:a:s:n:p:g:" OPTION
@@ -206,11 +205,9 @@ do
       echo -n "where do you want to save the mods? [enter full path]: "
       read MODPATH
       if [ -z $MODPATH ]; then MODPATH="."; fi
-      MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
+      # MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
+      MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre"
       pages_parse
-      echo $MODPATH
-      echo $MODURL
-      echo $PAGES
       ;;
 
     ?)
