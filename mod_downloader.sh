@@ -170,7 +170,8 @@ do
 	
 	a)
          echo -n "where do you want to save the mods? [enter full path]: "
-         read MODPATH   
+         read MODPATH
+	 if [ $MODPATH = "" 
 	 MODURL="http://modarchive.org/index.php?query=${OPTARG}&submit=Find&request=search&search_type=guessed_artist&order=5"
 	    PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep navlink | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
             ;;
@@ -200,6 +201,7 @@ do
 	    read GENREPAGE
 	    echo -n "where do you want to save the mods? [enter full path]: "
             read MODPATH
+	    if [ -z $MODPATH ]; then MODPATH="."; fi
 	    MODURL="http://lite.modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"               
             PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep navlink | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
             ;;
