@@ -31,9 +31,9 @@ usage()
 usage: $0 [options]
 
 Mod Downloader options:
-  -h		           Show this help message
-  -n <number> 	   Number of tracks to download
-  -s <section> 	   Download from selected section: Can be one of this
+  -h               Show this help message
+  -n <number>      Number of tracks to download
+  -s <section>     Download from selected section: Can be one of this
        uploads     This is a list of the recent member upload activity
 
        featured    These modules have been nominated by the crew for either
