@@ -15,6 +15,7 @@
 #
 # Derrived from MODARCHIVE JUKEBOX by Fernando Sancho AKA 'toptnc' (see below)
 # by Demonic Sweaters www.demonicsweaters.com released under GNU GPL License
+# edits by Milk - https://github.com/mxmilkb/moddownloaderv
 ###############################################################################
 #                        MODARCHIVE JUKEBOX SCRIPT
 #	
@@ -31,9 +32,9 @@
 PLAYLISTFILE=/tmp/modarchive.url
 
 #Configuration file overrides defaults
-if [ -f $HOME/.modarchiverc ];
+if [ -f $HOME/.config/modarchive/modarchiverc ];
 then
-    source $HOME/.modarchiverc
+    source $HOME/.config/modarchive/modarchiverc
 fi
 
 usage()
