@@ -10,6 +10,8 @@ Required packages:
 * grep
 * awk
 
+Warning: do not run multiple copies at the same time (yet)
+
 
 ```
 Mod Downloader instructions:
