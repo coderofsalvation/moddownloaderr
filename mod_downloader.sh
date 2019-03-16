@@ -62,15 +62,14 @@ Mod Downloader instructions:
 
    -a <artist>  Search in artist database
    -m <module>  Search in module database (Title and Filename)
-   -g <genre>   Download a specific genre (for the time being this must be done
-		by using the genre number at modarchive.org. In order to get the
-		number, go to modarchive.org and click the genres page. Hover your
-		mouse over the genre and look for the number in the link address.)
+   -g <genre>   Download a specific genre: go to modarchive.org genres page*. Hover
+   		your mouse over the genre and look for the number in the link address.)
 		Genre will also ask you for a page number. This is refering to the
 		search results page. Leave blank for page 1, then run the script 
 		again and enter 2, 3, 4, etc... if you want to download the rest 
 		of the pages.
-
+		
+		* http://modarchive.org/index.php?request=view_genres
 
 Hint: Use + symbol instead blankspaces in search strings.
 Hint 2: if you're running Mac OSX, you must first run this command before the script will run: function _wget() { curl "${1}" -o $(basename "${1}") ; };
