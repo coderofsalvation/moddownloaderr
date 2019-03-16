@@ -30,9 +30,7 @@
 #
 ###############################################################################
 
-PLAYLISTFILE=/tmp/modarchive.url
-
-#Configuration file overrides defaults
+# Configuration file overrides defaults
 if [ -f $HOME/.config/modarchive/modarchiverc ];
 then
     source $HOME/.config/modarchive/modarchiverc
@@ -83,11 +81,11 @@ alias wget='_wget'
 EOF
 }
 
-
 create_playlist()
 {
     PLAYLIST=""
-    
+    PLAYLISTFILE=/tmp/modarchive/modarchive.url
+
     if [ -z $PAGES ];
     then
         PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
@@ -102,12 +100,13 @@ create_playlist()
             PLAYLIST=$(printf "${PLAYLIST}\n${LIST}")
         done
 	echo ""
-    fi     
-    if [ -z $SHUFFLE ];
+    fi
+    if [ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive
+    if [ -z $SHUFFLE];
     then
-        echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
+	echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
     else
-        echo "$PLAYLIST" | sed '/^$/d' | awk 'BEGIN { srand() } { print rand() "\t" $0 }' | sort -n | cut -f2- > $PLAYLISTFILE
+	echo "$PLAYLIST" | sed '/^$/d' | awk 'BEGIN { srand() } { print rand() "\t" $0 }' | sort -n | cut -f2- > $PLAYLISTFILE
     fi
 }
 
@@ -176,14 +175,15 @@ do
 	a)
          echo -n "where do you want to save the mods? [enter full path]: "
          read MODPATH
-	 if [ $MODPATH = "" 
+	 if [ -z $MODPATH ]; then MODPATH="."; fi
 	 MODURL="http://modarchive.org/index.php?query=${OPTARG}&submit=Find&request=search&search_type=guessed_artist&order=5"
 	    PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep navlink | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
             ;;
 	
 	m) 
 	 echo -n "where do you want to save the mods? [enter full path]: "
-         read MODPATH          
+         read MODPATH
+	 if [ -z $MODPATH ]; then MODPATH="."; fi
 	 MODURL="http://modarchive.org/index.php?request=search&query=${OPTARG}&submit=Find&search_type=filename_or_songtitle"               
             PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep navlink | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
             ;;
@@ -269,4 +269,3 @@ while [ $LOOP = "true" ]; do
 	# "${MODPATH}/${MODFILE}"
     #fi
 done
-
