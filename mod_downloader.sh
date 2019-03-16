@@ -12,18 +12,10 @@
 #  If you are using mac os x you need to run this command before this will work
 #  function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
 #
-#  Derrived from MODARCHIVE JUKEBOX by Fernando Sancho AKA 'toptnc' (see below)
-#  by Demonic Sweaters www.demonicsweaters.com released under GNU GPL License
-#  edits by Milk - https://github.com/mxmilkb/moddownloaderv
+#  Derrived from MODARCHIVE JUKEBOX by Fernando Sancho AKA 'toptnc'
+#  Modifications by Demonic Sweaters www.demonicsweaters.com
+#  Edits by Milk - https://github.com/mxmilkb/moddownloader
 #
-###############################################################################
-#        MODARCHIVE JUKEBOX SCRIPT
-#
-#  Made by: Fernando Sancho AKA 'toptnc'
-#  email: toptnc@gmail.com
-#
-#  This script plays mods from http://modarchive.org in random order and can
-#  fetch files from various categories.
 #
 #  This script is released under the terms of the GNU LGPL v3.0 license
 #
