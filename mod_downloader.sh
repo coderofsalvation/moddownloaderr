@@ -3,29 +3,30 @@
 ###############################################################################
 # 			 MODARCHIVE.ORG DOWNLOADER
 #
-#
 #  This script will download mods from modarchive.org to a directory of your 
 #  choice. Type -h for help and options. Download by genre, or other search
 #  criteria.
-#  you will be prompted where you would like to save the mods when you run 
-#  the script. 
 #
-# if you are using mac os x you need to run this command before this will work
-# function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
+#  You will be prompted where you would like to save the mods when you run 
+#  the script. If you leave the prompt empty, it will use pwd as path.
 #
-# Derrived from MODARCHIVE JUKEBOX by Fernando Sancho AKA 'toptnc' (see below)
-# by Demonic Sweaters www.demonicsweaters.com released under GNU GPL License
-# edits by Milk - https://github.com/mxmilkb/moddownloaderv
+#  If you are using mac os x you need to run this command before this will work
+#  function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
+#
+#  Derrived from MODARCHIVE JUKEBOX by Fernando Sancho AKA 'toptnc' (see below)
+#  by Demonic Sweaters www.demonicsweaters.com released under GNU GPL License
+#  edits by Milk - https://github.com/mxmilkb/moddownloaderv
+#
 ###############################################################################
 #                        MODARCHIVE JUKEBOX SCRIPT
-#	
+#
 #  Made by: Fernando Sancho AKA 'toptnc'
 #  email: toptnc@gmail.com
 #
-#  This script plays mods from http://modarchive.org in random order
-#  It can fetch files from various categories
+#  This script plays mods from http://modarchive.org in random order and can
+#  fetch files from various categories.
 #
-#  This script is released under the terms of GNU GPL License 
+#  This script is released under the terms of the GNU LGPL v3.0 license
 #
 ###############################################################################
 
@@ -42,23 +43,27 @@ usage()
     cat << EOF
 usage: $0 [options]
 
-Mod Downloader instructions:
-   -h : Show this help message
-   -n <number> (REQUIRED) Number of tracks to download
-   -s <section> Download from selected section: Can be one of this 
-          uploads     This is a list of the recent member upload activity
+Mod Downloader options:
+  -h		   Show this help message
+  -n <number> 	   (REQUIRED) Number of tracks to download
+  -s <section> 	   Download from selected section: Can be one of this 
+       uploads     This is a list of the recent member upload activity
 
-          featured    These modules have been nominated by the crew for either 
-                      outstanding quality, technique or creativity 
-                      (or combination of).
-          favourites  These modules have been nominated by the members via their
-                      favourites. 
-          downloads   The top 1000 most downloaded modules, recorded since circa
-                      2002. 
-          topscore    This chart lists the most revered modules on the archive.
-          new         Same than uploads but using search engine
+       featured    These modules have been nominated by the crew for either 
+                     outstanding quality, technique or creativity 
+                     (or combination of).
 
-          random      Ramdom module from entire archive
+       favourites  These modules have been nominated by the members via their
+                     favourites.
+
+       downloads   The top 1000 most downloaded modules, recorded since circa
+                     2002.
+
+       topscore    This chart lists the most revered modules on the archive.
+
+       new         Same than uploads but using search engine
+
+       random      Ramdom module from entire archive
 
    -a <artist>  Search in artist database
    -m <module>  Search in module database (Title and Filename)
