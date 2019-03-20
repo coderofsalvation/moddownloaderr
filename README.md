@@ -3,9 +3,7 @@
 Based on the modarchive script by Fernando Sancho AKA 'toptnc' - https://github.com/toptnc/modarchive, modifications by Justin Wierbonski aka Demonic Sweaters - https://github.com/demonicsweaters/moddownloader, and updates by Milk - https://github.com/mxmilkb/moddownloaderr
 
 Required packages:
-* mikmod, opencp or audacious
-* curl
-* html2text
+* wget
 * sed
 * grep
 * awk
