@@ -47,6 +47,8 @@ script will run:
 Hint 3: Use 'MDDEBUG=1 path/moddownloaderr' to enable debug output.
 ```
 
-Use `mixxx` to play modules - https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard
+Available from the [AUR](https://aur.archlinux.org/packages/moddownloaderr/)
+
+Use [Mixxx](https://mixxx.org/) to DJ modules ([details](https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard))
 
 See also https://wiki.thingsandstuff.org/Tracker
