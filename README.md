@@ -30,6 +30,7 @@ Mod Downloaderr options:
                      2002.
 		     
        topscore    This chart lists the most revered modules on the archive.
+       
        new         Same than uploads but using search engine
        
        random      Ramdom module from entire archive
