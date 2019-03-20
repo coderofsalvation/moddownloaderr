@@ -12,10 +12,6 @@ Required packages:
 
 Warning: do not run multiple copies at the same time (yet)
 
-Use `mixxx` to play modules - https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard
-
-See also https://wiki.thingsandstuff.org/Tracker
-
 ```
 Mod Downloaderr options:
   -h               Show this help message
@@ -47,3 +43,7 @@ Hint 2: if you're running Mac OSX, you must first run this command before the
 script will run:
   function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
 ```
+
+Use `mixxx` to play modules - https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard
+
+See also https://wiki.thingsandstuff.org/Tracker
