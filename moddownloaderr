@@ -63,7 +63,7 @@ Hint 2: If you're running Mac OSX, you must first run this command before the
 script will run:
   function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
 
-Hint 3: Use 'MDDEBUG=1 path/mod_downloader.sh' to enable debug output.
+Hint 3: Use 'MDDEBUG=1 path/moddownloaderr' to enable debug output.
 
 EOF
 }
