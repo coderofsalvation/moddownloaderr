@@ -21,8 +21,8 @@
 ###############################################################################
 
 # Configuration file overrides defaults
-if [ -f $HOME/.config/moddownloadrr/moddlrc ]; then
-  source $HOME/.config/moddownloaderr/moddlrc
+if [ -f $HOME/.config/moddownloaderr/moddownloaderrrc ]; then
+  source $HOME/.config/moddownloaderr/moddownloaderrrc
 fi
 
 usage()
@@ -63,7 +63,7 @@ Hint 2: If you're running Mac OSX, you must first run this command before the
 script will run:
   function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
 
-Hint 3: Use 'MDDEBUG=1 path/moddownloaderr' to enable debug output.
+Hint 3: Use 'MDDEBUG=1 moddownloaderr' to enable debug output.
 
 EOF
 }
@@ -125,7 +125,7 @@ EOF
 create_playlist()
 {
   PLAYLIST=""
-  PLAYLISTFILE=/tmp/modarchive/modarchive.url
+  PLAYLISTFILE=/tmp/moddownloaderr/moddownloaderr.url
 
   if [ -z $PAGES ]; then
     PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
@@ -141,7 +141,7 @@ create_playlist()
     done
     echo ""
   fi
-  [ ! -d /tmp/modarchive ] && mkdir /tmp/modarchive;
+  [ ! -d /tmp/moddownloaderr ] && mkdir /tmp/moddownloaderr;
   if [ -z $SHUFFLE]; then
     echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
   else
