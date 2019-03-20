@@ -36,12 +36,16 @@ Mod Downloaderr options:
        
    -a <artist>     Search in artist database
    -m <module>     Search in module database (Title and Filename)
-   -g [<genrenum>] Download all of a specific genre
+   -g [<genrenum>] Download a specific genre. Either enter the modarchive.org
+                     genres number, or select from a list.
 
 Hint: Use + symbol instead blankspaces in search strings.
+
 Hint 2: if you're running Mac OSX, you must first run this command before the
 script will run:
   function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
+  
+Hint 3: Use 'MDDEBUG=1 path/moddownloaderr' to enable debug output.
 ```
 
 Use `mixxx` to play modules - https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard
