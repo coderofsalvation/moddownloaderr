@@ -261,16 +261,13 @@ if [ -z $MODURL ]; then
   exit 1
 fi
 
-echo
-echo "Starting Download Process"
 LOOP="true"
 if [ -z $RANDOMSONG ]; then
-  echo "- Creating playlist"
+  echo "Creating download playlist"
   create_playlist
   [ $MDDEBUG ] && echo DEBUG playlist file: $PLAYLISTFILE
   TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
-  echo "- Your query returned ${TRACKSFOUND} results"
-  echo
+  echo "There are ${TRACKSFOUND} tracks in the playlist to download"
 fi
 
 COUNTER=1
