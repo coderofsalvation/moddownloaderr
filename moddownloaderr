@@ -21,8 +21,8 @@
 ###############################################################################
 
 # Configuration file overrides defaults
-if [ -f $HOME/.config/modarchive/modarchiverc ]; then
-  source $HOME/.config/modarchive/modarchiverc
+if [ -f $HOME/.config/moddownloadrr/moddlrc ]; then
+  source $HOME/.config/moddownloaderr/moddlrc
 fi
 
 usage()
@@ -162,6 +162,7 @@ set_modpath()
   echo -n ": "
   read MODPATH
   if [ -z $MODPATH ]; then MODPATH="."; fi
+  echo Download path set to: $MODPATH
 }
 
 
