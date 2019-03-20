@@ -1,6 +1,6 @@
 #!/bin/bash
 ###############################################################################
-# 			 MODARCHIVE.ORG DOWNLOADER
+# 			 MODARCHIVE.ORG DOWNLOADERR
 #
 #  This script will download mods from modarchive.org to a directory of your
 #  choice. Type -h for help and options. Download by genre, or other search
@@ -30,7 +30,7 @@ usage()
   cat << EOF
 usage: $0 [options]
 
-Mod Downloader options:
+Mod Downloaderr options:
   -h               Show this help message
   -n <number>      Number of tracks to download
   -s <section>     Download from selected section: Can be one of this
@@ -54,17 +54,70 @@ Mod Downloader options:
 
    -a <artist>     Search in artist database
    -m <module>     Search in module database (Title and Filename)
-   -g <genre>      Download a specific genre: go to modarchive.org genres page*.
-                   Hover your mouse over the genre and look for the number in
-                   the link address.)
-
-                   * http://modarchive.org/index.php?request=view_genres
+   -g [<genrenum>] Download a specific genre. Either enter the modarchive.org
+                     genres number, or select from a list.
 
 Hint: Use + symbol instead blankspaces in search strings.
 
-Hint 2: if you're running Mac OSX, you must first run this command before the
+Hint 2: If you're running Mac OSX, you must first run this command before the
 script will run:
   function _wget() { curl "${1}" -o $(basename "${1}") ; }; alias wget='_wget'
+
+Hint 3: Use 'MDDEBUG=1 path/mod_downloader.sh' to enable debug output.
+
+EOF
+}
+
+echo_genres()
+{
+  cat << EOF
+  Numbers for each genre:
+
+    Alternative                        Jazz, Blues
+      Alternative - 48                   Big Band - 74
+      Gothic - 38                        Blues - 19
+      Grunge - 103                       Jazz - Acid - 30
+      Metal - Extreme - 37               Jazz - Modern - 31
+      Metal - 36                         Jazz - 29
+      Punk - 35                          Swing - 75
+
+    Demo, Tracking Scene               Other
+      Chiptune - 54                      Bluegrass - 105
+      Demo Style - 55                    Classical - 20
+      One Hour Compo - 53                Comedy - 45
+                                         Country - 18
+    Electronica                          Experimental - 46
+      Chillout - 106                     Fantasy - 52
+      Electronic - 1                     Folk - 21
+      Electronic - Ambient - 2           Fusion - 102
+      Electronic - Breakbeat - 9         Medieval - 28
+      Electronic - Dance - 3             New Age - 44
+      Electronic - Drum & Bass - 6       Orchestral - 50
+      Electronic - Gabber - 40           Other - 41
+      Electronic - Hardcore - 39         Piano - 59
+      Electronic - House - 10            Religious - 49
+      Electronic - IDM - 99              Soundtrack - 43
+      Electronic - Industrial - 34       Spiritual - 47
+      Electronic - Jungle - 60           Video Game - 8
+      Electronic - Minimal - 101         Vocal Montage - 76
+      Electronic - Other - 100           World - 42
+      Electronic - Progressive - 11
+      Electronic - Rave - 65           Pop, Rock
+      Electronic - Techno - 7            Ballad - 56
+      Trance - 71                        Disco - 58
+      Trance - Acid - 63                 Easy Listening - 107
+      Trance - Dream - 67                Funk - 32
+      Trance - Goa - 66                  Pop - Soft - 62
+      Trance - Hard - 64                 Pop - Synth - 61
+      Trance - Progressive - 85          Pop - 12
+      Trance - Tribal - 70               Rock - Hard - 14
+                                         Rock - Soft - 15
+    Urban, Hip-Hop                       Rock - 13
+      Hip-Hop - 22
+      R & B - 26                       Seasonal
+      Reggae - 27                        Christmas - 72
+      Ska - 24                           Halloween - 82
+      Soul - 25
 
 EOF
 }
@@ -101,7 +154,24 @@ pages_parse()
   PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
 }
 
-while getopts "hrm:a:s:n:p:g:" OPTION
+set_modpath()
+{
+  echo "Where do you want to save the mods?"
+  echo "[enter full path, or leave blank for pwd, which is;"
+  echo " `pwd`]"
+  echo -n ": "
+  read MODPATH
+  if [ -z $MODPATH ]; then MODPATH="."; fi
+}
+
+
+[ $MDDEBUG ] && echo DEBUG OPTION: $OPTION
+[ $MDDEBUG ] && echo DEBUG OPTARG: $OPTARG
+
+echo ModArchive Downloaderr
+echo
+
+while getopts "hrm:a:s:p:gd" OPTION
 do
   case $OPTION in
     h)
@@ -112,43 +182,35 @@ do
     s)
       case $OPTARG in
         uploads)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
           PAGES=
           ;;
         featured)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           pages_parse
           ;;
         favourites)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           MODURL="http://modarchive.org/index.php?request=view_top_favourites"
           pages_parse
           ;;
         downloads)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           MODURL="http://modarchive.org/index.php?request=view_chart&query=tophits"
           pages_parse
           ;;
         topscore)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           MODURL="http://modarchive.org/index.php?request=view_chart&query=topscore"
           pages_parse
           ;;
         new)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           MODURL="http://modarchive.org/index.php?request=search&search_type=new_additions"
           pages_parse
           ;;
 
         random)
-          echo -n "where do you want to save the mods? [enter full path]: "
-          read MODPATH
+          set_modpath
           RANDOMSONG="true"
           MODURL="http://modarchive.org/index.php?request=view_random"
           PAGES=
@@ -161,41 +223,29 @@ do
       ;;
 
     a)
-      echo -n "where do you want to save the mods? [enter full path]: "
-      read MODPATH
-      if [ -z $MODPATH ]; then MODPATH="."; fi
+      set_modpath
       MODURL="http://modarchive.org/index.php?query=${OPTARG}&submit=Find&request=search&search_type=guessed_artist&order=5"
       pages_parse
       ;;
 
     m)
-      echo -n "where do you want to save the mods? [enter full path]: "
-      read MODPATH
-      if [ -z $MODPATH ]; then MODPATH="."; fi
+      set_modpath
       MODURL="http://modarchive.org/index.php?request=search&query=${OPTARG}&submit=Find&search_type=filename_or_songtitle"
       pages_parse
       ;;
 
-    n)
-      expr $OPTARG + 1 > /dev/null
-      if [ $? = 0 ]; then
-        TRACKSNUM=${OPTARG};
-      else
-        echo "ERROR -n requires a number as argument"
-        usage
-        exit 1
-      fi
+    g)
+      echo_genres
+      echo -n "What genre do you wish to download? (enter number from above): "
+      read GENRENUM
+      set_modpath
+      MODURL="http://modarchive.org/index.php?query=${GENRENUM}&request=search&search_type=genre"
+      pages_parse
       ;;
 
-    g)
-      #echo -n "enter the page number for genre download and press [enter]: "
-      #read GENREPAGE
-      echo -n "where do you want to save the mods? [enter full path. leave blank for current directory]: "
-      read MODPATH
-      if [ -z $MODPATH ]; then MODPATH="."; fi
-      # MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre&page=$GENREPAGE#mods"
-      MODURL="http://modarchive.org/index.php?query=${OPTARG}&request=search&search_type=genre"
-      pages_parse
+    d)
+      MDDEBUG=true
+      echo DEBUG *
       ;;
 
     ?)
@@ -210,42 +260,42 @@ if [ -z $MODURL ]; then
   exit 1
 fi
 
-echo "Starting Modarchive Downloader"
+echo
+echo "Starting Download Process"
 LOOP="true"
-
 if [ -z $RANDOMSONG ]; then
-  echo "Creating playlist"
+  echo "- Creating playlist"
   create_playlist
+  [ $MDDEBUG ] && echo DEBUG playlist file: $PLAYLISTFILE
   TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
-  echo "Your query returned ${TRACKSFOUND} results"
+  echo "- Your query returned ${TRACKSFOUND} results"
+  echo
 fi
 
 COUNTER=1
+[ $MDDEBUG ] && echo DEBUG modpath: $MODPATH
 while [ $LOOP = "true" ]; do
   if [ -z $RANDOMSONG ]; then
     SONGURL=$(cat ${PLAYLISTFILE} | head -n ${COUNTER} | tail -n 1)
+    [ $MDDEBUG ] && echo DEBUG
+    [ $MDDEBUG ] && echo DEBUG song url: $SONGURL
+    [ $MDDEBUG ] && echo DEBUG
+    echo -n $COUNTER
     let COUNTER=$COUNTER+1
-    if [ $TRACKSNUM -gt 0 ]; then
-      if [ $COUNTER -gt $TRACKSNUM ] || [ $COUNTER -gt $TRACKSFOUND ]; then
-        LOOP="false"
-      fi
-    elif [ $COUNTER -gt $TRACKSFOUND ]; then
-      LOOP="false"
-    fi
+    [ $TRACKSFOUND -gt 0 ] && [ $COUNTER -gt $TRACKSFOUND ] && LOOP="false"
   else
     SONGURL=$(wget -o /dev/null -O - "$MODURL" | sed 's/href=\"/href=\"\n/g' | sed 's/\">/\n\">/g' | grep downloads.php | head -n 1);
+    [ $MDDEBUG ] && echo DEBUG song url: $SONGURL
+    echo -n $COUNTER
     let COUNTER=$COUNTER+1
-    if [ $TRACKSNUM -gt 0 ] && [ $COUNTER -gt $TRACKSNUM ]; then
-      LOOP="false"
-    fi
+    [ $TRACKSFOUND -gt 0 ] && [ $COUNTER -gt $TRACKSFOUND ] && LOOP="false"
   fi
 
   MODFILE=$(echo "$SONGURL" | cut -d "#" -f 2)
   if [ ! -e "${MODPATH}/${MODFILE}" ]; then
-    echo "Downloading $SONGURL to $MODPATH/$MODFILE";
+    echo "/$TRACKSFOUND Downloading $SONGURL to $MODPATH/$MODFILE";
     wget -o /dev/null -O "${MODPATH}/${MODFILE}" "$SONGURL";
+  elif [ -e "${MODPATH}/${MODFILE}" ]; then
+    echo "$TRACKSFOUND * Already exists - '${MODPATH}/${MODFILE}'"
   fi
-  #if [ -e "${MODPATH}/${MODFILE}" ];then
-  # "${MODPATH}/${MODFILE}"
-  #fi
 done
