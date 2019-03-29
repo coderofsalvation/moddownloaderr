@@ -1,13 +1,26 @@
 `moddownloaderr` - a bash script that downloads tracker created module music files (.mod, .xm, .it, .s3m) from modarchive.org. You can select the amount of files you want to download and use various search criteria as well as save locations for each download session. This is a quick way to get a huge mod library on your computer.
 
+### History
 Based on the modarchive script by Fernando Sancho AKA 'toptnc' - https://github.com/toptnc/modarchive, modifications by Justin Wierbonski aka Demonic Sweaters - https://github.com/demonicsweaters/moddownloader, and updates by Milk - https://github.com/mxmilkb/moddownloaderr
 
+### Install 
 Required packages:
 * wget
 * sed
 * grep
 * awk
 
+Available from the [AUR](https://aur.archlinux.org/packages/moddownloaderr/) for Arch Linux and related distros.
+
+Quick setup:
+```
+mkdir ~/bin
+cd ~/bin
+git clone https://github.com/mxmilkb/moddownloaderr
+ln -s moddownloaderr/moddownloaderr
+```
+
+### Usage
 Warning: do not run multiple copies at the same time (yet)
 
 ```
@@ -40,6 +53,5 @@ Hint 4: Some tracks are in more than one genre category. Use dupeguru to remove
 duplicate files.
 ```
 
-Available from the [AUR](https://aur.archlinux.org/packages/moddownloaderr/)
 
 Use [Mixxx](https://mixxx.org/) to DJ modules ([details](https://blueprints.launchpad.net/mixxx/+spec/mod-music-playback#edit-whiteboard)). See also https://wiki.thingsandstuff.org/Tracker.
