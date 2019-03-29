@@ -20,38 +20,37 @@
 #
 ###############################################################################
 
+
 # Configuration file overrides defaults
-if [ -f $HOME/.config/moddownloaderr/moddownloaderrrc ]; then
-  source $HOME/.config/moddownloaderr/moddownloaderrrc
+if [ -f "$HOME/.config/moddownloaderr/moddownloaderrrc" ]; then
+  source "$HOME/.config/moddownloaderr/moddownloaderrrc"
 fi
+
+
+# trap ctrl-c and call ctrl_c()
+trap ctrl_c INT
+
 
 usage()
 {
   cat << EOF
-usage: $0 [options]
+usage: $0 [option]
 
 Mod Downloaderr options:
   -h               Show this help message
-  -n <number>      Number of tracks to download
+  -n <number>      Optionally cap the total number of tracks to download
   -s <section>     Download from selected section: Can be one of this
        uploads     This is a list of the recent member upload activity
-
        featured    These modules have been nominated by the crew for either
-                     outstanding quality, technique or creativity
-                     (or combination of).
-
+                     outstanding quality, technique or creativity (or
+                     combination of).
        favourites  These modules have been nominated by the members via their
                      favourites.
-
        downloads   The top 1000 most downloaded modules, recorded since circa
                      2002.
-
        topscore    This chart lists the most revered modules on the archive.
-
        new         Same than uploads but using search engine
-
        random      Ramdom module from entire archive
-
    -a <artist>     Search in artist database
    -m <module>     Search in module database (Title and Filename)
    -g [<genrenum>] Download a specific genre. Either enter the modarchive.org
@@ -65,8 +64,12 @@ script will run:
 
 Hint 3: Use 'MDDEBUG=1 moddownloaderr' to enable debug output.
 
+Hint 4: Some tracks are in more than one genre category. Use dupeguru to remove
+duplicate files.
+
 EOF
 }
+
 
 echo_genres()
 {
@@ -74,60 +77,61 @@ echo_genres()
   Numbers for each genre:
 
     Alternative                        Jazz, Blues
-      Alternative - 48                   Big Band - 74
-      Gothic - 38                        Blues - 19
-      Grunge - 103                       Jazz - Acid - 30
-      Metal - Extreme - 37               Jazz - Modern - 31
-      Metal - 36                         Jazz - 29
-      Punk - 35                          Swing - 75
+      Alternative: 48                    Big Band: 74
+      Gothic: 38                         Blues: 19
+      Grunge: 103                        Jazz (Acid): 30
+      Metal (Extreme): 37                Jazz (Modern): 31
+      Metal: 36                          Jazz: 29
+      Punk: 35                           Swing: 75
 
     Demo, Tracking Scene               Other
-      Chiptune - 54                      Bluegrass - 105
-      Demo Style - 55                    Classical - 20
-      One Hour Compo - 53                Comedy - 45
-                                         Country - 18
-    Electronica                          Experimental - 46
-      Chillout - 106                     Fantasy - 52
-      Electronic - 1                     Folk - 21
-      Electronic - Ambient - 2           Fusion - 102
-      Electronic - Breakbeat - 9         Medieval - 28
-      Electronic - Dance - 3             New Age - 44
-      Electronic - Drum & Bass - 6       Orchestral - 50
-      Electronic - Gabber - 40           Other - 41
-      Electronic - Hardcore - 39         Piano - 59
-      Electronic - House - 10            Religious - 49
-      Electronic - IDM - 99              Soundtrack - 43
-      Electronic - Industrial - 34       Spiritual - 47
-      Electronic - Jungle - 60           Video Game - 8
-      Electronic - Minimal - 101         Vocal Montage - 76
-      Electronic - Other - 100           World - 42
-      Electronic - Progressive - 11
-      Electronic - Rave - 65           Pop, Rock
-      Electronic - Techno - 7            Ballad - 56
-      Trance - 71                        Disco - 58
-      Trance - Acid - 63                 Easy Listening - 107
-      Trance - Dream - 67                Funk - 32
-      Trance - Goa - 66                  Pop - Soft - 62
-      Trance - Hard - 64                 Pop - Synth - 61
-      Trance - Progressive - 85          Pop - 12
-      Trance - Tribal - 70               Rock - Hard - 14
-                                         Rock - Soft - 15
-    Urban, Hip-Hop                       Rock - 13
-      Hip-Hop - 22
-      R & B - 26                       Seasonal
-      Reggae - 27                        Christmas - 72
-      Ska - 24                           Halloween - 82
-      Soul - 25
+      Chiptune: 54                       Bluegrass: 105
+      Demo Style: 55                     Classical: 20
+      One Hour Compo: 53                 Comedy: 45
+                                         Country: 18
+    Electronica                          Experimental: 46
+      Chillout: 106                      Fantasy: 52
+      Electronic: 1                      Folk: 21
+      Electronic (Ambient): 2            Fusion: 102
+      Electronic (Breakbeat): 9          Medieval: 28
+      Electronic (Dance): 3              New Age: 44
+      Electronic (Drum & Bass): 6        Orchestral: 50
+      Electronic (Gabber): 40            Other: 41
+      Electronic (Hardcore): 39          Piano: 59
+      Electronic (House): 10             Religious: 49
+      Electronic (IDM): 99               Soundtrack: 43
+      Electronic (Industrial): 34        Spiritual: 47
+      Electronic (Jungle): 60            Video Game: 8
+      Electronic (Minimal): 101          Vocal Montage: 76
+      Electronic (Other): 100            World: 42
+      Electronic (Progressive): 11
+      Electronic (Rave): 65            Pop, Rock
+      Electronic (Techno): 7             Ballad: 56
+      Trance: 71                         Disco: 58
+      Trance (Acid): 63                  Easy Listening: 107
+      Trance (Dream): 67                 Funk: 32
+      Trance (Goa): 66                   Pop: 12
+      Trance (Hard): 64                  Pop (Synth): 61
+      Trance (Progressive): 85           Pop (Soft): 62
+      Trance (Tribal): 70                Rock: 13
+                                         Rock (Hard): 14
+    Urban, Hip-Hop                       Rock (Soft): 15
+      Hip-Hop: 22
+      R & B: 26                        Seasonal
+      Reggae: 27                         Christmas: 72
+      Ska: 24                            Halloween: 82
+      Soul: 25
 
 EOF
 }
+
 
 create_playlist()
 {
   PLAYLIST=""
   PLAYLISTFILE=/tmp/moddownloaderr/moddownloaderr.url
 
-  if [ -z $PAGES ]; then
+  if [ -z "$PAGES" ]; then
     PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
   else
     echo "Need to download ${PAGES} pages of results. This may take a while..."
@@ -142,42 +146,58 @@ create_playlist()
     echo ""
   fi
   [ ! -d /tmp/moddownloaderr ] && mkdir /tmp/moddownloaderr;
-  if [ -z $SHUFFLE]; then
+  if [ -z $SHUFFLE ]; then
     echo "$PLAYLIST" | sed '/^$/d' > $PLAYLISTFILE
   else
     echo "$PLAYLIST" | sed '/^$/d' | awk 'BEGIN { srand() } { print rand() "\t" $0 }' | sort -n | cut -f2- > $PLAYLISTFILE
   fi
 }
 
+
 pages_parse()
 {
+  echo Parsing download pages
   PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
 }
 
+
 set_modpath()
 {
+  CURRENTPATH=$(pwd)
   echo "Where do you want to save the mods?"
-  echo "[enter full path, or leave blank for pwd, which is;"
-  echo " `pwd`]"
-  echo -n ": "
-  read MODPATH
-  if [ -z $MODPATH ]; then MODPATH="."; fi
-  echo Download path set to: $MODPATH
+  read -p "> " -e -i $CURRENTPATH MODPATH
+  echo Download path has been set to: $MODPATH
+  echo
+}
+
+
+ctrl_c()
+{
+  echo
+  echo "** Ctrl-c detected - exiting! **"
+  [ $MODFILE ] && [ $MDDEBUG ] && echo DEBUG partial file being removed:
+  [ $MODFILE ] && rm $MODPATH/$MODFILE
+  exit
 }
 
 
 [ $MDDEBUG ] && echo DEBUG OPTION: $OPTION
 [ $MDDEBUG ] && echo DEBUG OPTARG: $OPTARG
 
-echo ModArchive Downloaderr
-echo
+# echo "ModArchive Downloaderr" && echo
 
-while getopts "hrm:a:s:p:gd" OPTION
+while getopts ":hrm:n:a:s:p:gd" OPTION
 do
   case $OPTION in
     h)
       usage
       exit 0;
+      ;;
+
+    d)
+      MDDEBUG=true
+      set -x
+      echo "** DEBUG OUTPUT IS ENABLED **" && echo
       ;;
 
     s)
@@ -235,24 +255,35 @@ do
       pages_parse
       ;;
 
+    n)
+      # expr $OPTARG + 1 > /dev/null
+      TRACKSMAXNUM=${OPTARG}
+      [ $MDDEBUG ] && echo DEBUG tracksmaxnum: $TRACKSMAXNUM && echo
+      ;;
+
     g)
-      echo_genres
-      echo -n "What genre do you wish to download? (enter number from above): "
-      read GENRENUM
+      GENRENUM=${@:$OPTIND}
+      if [ -z $GENRENUM ]; then
+        [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM
+        echo_genres
+        echo "What genre do you wish to download? (enter a number from above)"
+        while ! [[ "$GENRENUM" =~ ^([1-9]|[1-8][0-9]|9[0-9]|10[0-7])$ ]]
+        do
+          read -p "> " GENRENUM
+          ! [[ "$GENRENUM" =~ ^([1-9]|[1-8][0-9]|9[0-9]|10[0-7])$ ]] && printf '\e[A\e[K'
+        done
+      fi
+      [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM && echo
       set_modpath
       MODURL="http://modarchive.org/index.php?query=${GENRENUM}&request=search&search_type=genre"
       pages_parse
-      ;;
-
-    d)
-      MDDEBUG=true
-      echo DEBUG *
       ;;
 
     ?)
       usage
       exit 1
       ;;
+
   esac
 done
 
@@ -270,20 +301,19 @@ if [ -z $RANDOMSONG ]; then
   echo "There are ${TRACKSFOUND} tracks in the playlist to download"
 fi
 
-COUNTER=1
 [ $MDDEBUG ] && echo DEBUG modpath: $MODPATH
+[ $MDDEBUG ] && echo DEBUG press enter to start downloads
+[ $MDDEBUG ] && read
+
+COUNTER=1
 while [ $LOOP = "true" ]; do
   if [ -z $RANDOMSONG ]; then
     SONGURL=$(cat ${PLAYLISTFILE} | head -n ${COUNTER} | tail -n 1)
-    [ $MDDEBUG ] && echo DEBUG
-    [ $MDDEBUG ] && echo DEBUG song url: $SONGURL
-    [ $MDDEBUG ] && echo DEBUG
     echo -n $COUNTER
     let COUNTER=$COUNTER+1
     [ $TRACKSFOUND -gt 0 ] && [ $COUNTER -gt $TRACKSFOUND ] && LOOP="false"
   else
     SONGURL=$(wget -o /dev/null -O - "$MODURL" | sed 's/href=\"/href=\"\n/g' | sed 's/\">/\n\">/g' | grep downloads.php | head -n 1);
-    [ $MDDEBUG ] && echo DEBUG song url: $SONGURL
     echo -n $COUNTER
     let COUNTER=$COUNTER+1
     [ $TRACKSFOUND -gt 0 ] && [ $COUNTER -gt $TRACKSFOUND ] && LOOP="false"
@@ -293,7 +323,9 @@ while [ $LOOP = "true" ]; do
   if [ ! -e "${MODPATH}/${MODFILE}" ]; then
     echo "/$TRACKSFOUND Downloading $SONGURL to $MODPATH/$MODFILE";
     wget -o /dev/null -O "${MODPATH}/${MODFILE}" "$SONGURL";
+    let TRACKSCOUNTER=$TRACKSCOUNTER+1
+    [ $TRACKSCOUNTER -eq $TRACKSMAXNUM ] && echo && echo $TRACKSMAXNUM tracks downloaded as requested - exiting now... && LOOP="false"
   elif [ -e "${MODPATH}/${MODFILE}" ]; then
-    echo "$TRACKSFOUND * Already exists - '${MODPATH}/${MODFILE}'"
+    echo "/$TRACKSFOUND - File already exists - '${MODPATH}/${MODFILE}'"
   fi
 done
