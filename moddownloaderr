@@ -133,7 +133,8 @@ create_playlist()
 {
   PLAYLIST=""
   PLAYLISTFILE=/tmp/moddownloaderr/moddownloaderr.url
-
+  # TODO implement moddownloaderr instance specific download playlists
+  
   if [ -z "$PAGES" ]; then
     PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
   else
