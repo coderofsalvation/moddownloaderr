@@ -71,6 +71,8 @@ EOF
 }
 
 
+declare -A possiblegenres=( [1]="Electronic" [2]="Electronic (Ambient)" [3]="Electronic (Dance)" [6]="Electronic (Drum & Bass)" [7]="Electronic (Techno)" [8]="Video Game" [9]="Electronic (Breakbeat)" [10]="Electronic (House)" [11]="Electronic (Progressive)" [12]="Pop" [13]="Rock" [14]="Rock (Hard)" [15]="Rock (Soft)" [18]="Country" [19]="Blues" [21]="Folk" [22]="Hip-hop" [24]="Ska" [25]="Soul" [26]="R & B" [27]="Reggae" [28]="Medieval" [29]="Jazz" [30]="Jazz (Acid)" [31]="Jazz (Modern)" [32]="Funk" [34]="Electronic (Industrial)" [35]="Punk" [36]="Metal" [37]="Metal (Extreme)" [38]="Gothic" [39]="Electronic (Hardcore)" [40]="Electronic (Gabber)" [41]="Other" [42]="World" [43]="Soundtrack" [44]="New Age" [45]="Comedy" [46]="Experimental" [47]="Spiritual" [48]="Alternative" [49]="Religious" [50]="Orchestral" [52]="Fantasy" [53]="One Hour Compo" [54]="Chiptune" [55]="Demo Style" [56]="Ballad" [58]="Disco" [59]="Piano" [60]="Electronic (Jungle)" [61]="Pop (Synth)" [62]="Pop (Soft)" [63]="Trance (Acid)" [64]="Trance (Hard)" [65]="Electronic (Rave)" [66]="Trance (Goa)" [67]="Trance (Dream)" [70]="Trance (Tribal)" [71]="Trance" [72]="Christmas" [74]="Big Band" [75]="Swing" [76]="Vocal Montage" [82]="Hallowe'en" [85]="Trance (Progressive)" [99]="Electronic (IDM)" [100]="Electronic (Other)" [101]="Electronic (Minimal)" [102]="Fusion" [103]="Fusion" [105]="Bluegrass" [106]="Chillout" [107]="Easy Listening" )
+
 echo_genres()
 {
   cat << EOF
@@ -267,13 +269,14 @@ do
         [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM
         echo_genres
         echo "What genre do you wish to download? (enter a number from above)"
-        while ! [[ "$GENRENUM" =~ ^([1-9]|[1-8][0-9]|9[0-9]|10[0-7])$ ]]
+        GENRENUM=0
+        while [ -z "${possiblegenres[$GENRENUM]}" ]
         do
           read -p "> " GENRENUM
-          ! [[ "$GENRENUM" =~ ^([1-9]|[1-8][0-9]|9[0-9]|10[0-7])$ ]] && printf '\e[A\e[K'
+          [ -z ${possiblegenres[$GENRENUM]} ] && printf '\e[A\e[K'
         done
       fi
-      [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM && echo
+      echo You have selected to download: ${possiblegenres[$GENRENUM]} && echo
       set_modpath
       MODURL="http://modarchive.org/index.php?query=${GENRENUM}&request=search&search_type=genre"
       pages_parse
