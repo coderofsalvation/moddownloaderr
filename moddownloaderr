@@ -186,7 +186,7 @@ ctrl_c()
 [ $MDDEBUG ] && echo DEBUG OPTION: $OPTION
 [ $MDDEBUG ] && echo DEBUG OPTARG: $OPTARG
 
-# echo "ModArchive Downloaderr" && echo
+echo "ModArchive Downloaderr"
 
 while getopts ":hrm:n:a:s:p:gd" OPTION
 do
