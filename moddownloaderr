@@ -159,8 +159,21 @@ create_playlist()
 
 pages_parse()
 {
-  echo Parsing download pages
-  PAGES=$(wget  -o /dev/null -O - $MODURL | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
+  [ $MDDEBUG ] && echo DEBUG modurl: $MODURL
+  echo Parsing download pages..
+  RAWPAGE=$(wget  -o /dev/null -O - $MODURL)
+  case "$RAWPAGE" in
+  *no*were?found.*)
+    echo No results found, exiting..
+    exit
+    ;;
+  esac
+  [ $MDDEBUG ] && echo DEBUG
+  [ $MDDEBUG ] && echo DEBUG rawpage: $RAWPAGE
+  export "$RAWPAGE"
+  [ $MDDEBUG ] && echo DEBUG
+  PAGES=$(echo $RAWPAGE | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
+  [ $MDDEBUG ] && echo DEBUG pages: $PAGES
 }
 
 
