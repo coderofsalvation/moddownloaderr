@@ -197,10 +197,9 @@ ctrl_c()
 }
 
 
-[ $MDDEBUG ] && echo DEBUG OPTION: $OPTION
-[ $MDDEBUG ] && echo DEBUG OPTARG: $OPTARG
-
 echo "ModArchive Downloaderr"
+
+TRACKSMAXNUM=9999
 
 while getopts ":hrm:n:a:s:p:gd" OPTION
 do
@@ -319,6 +318,7 @@ if [ -z $RANDOMSONG ]; then
 fi
 
 [ $MDDEBUG ] && echo DEBUG modpath: $MODPATH
+[ $MDDEBUG ] && echo DEBUG tracksmmaxnum: $TRACKSMAXNUM
 [ $MDDEBUG ] && echo DEBUG press enter to start downloads
 [ $MDDEBUG ] && read
 
