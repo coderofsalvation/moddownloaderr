@@ -260,6 +260,11 @@ do
 
     a)
       set_modpath
+      # [ $MDDEBUG ] && echo DEBUG option: $OPTION"
+      # [ $MDDEBUG ] && echo DEBUG optarg: $OPTARG"
+      ARGLEN=$(echo "$OPTARG" | wc -m)
+      [ $MDDEBUG ] && echo DEBUG arglen: $ARGLEN
+      [ $ARGLEN -gt 31 ] && echo "Query string "$OPTARG" is too long (over 31 characters). Exiting.." && exit
       MODURL="http://modarchive.org/index.php?query=${OPTARG}&submit=Find&request=search&search_type=guessed_artist&order=5"
       pages_parse
       ;;
