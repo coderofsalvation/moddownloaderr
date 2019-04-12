@@ -171,14 +171,15 @@ pages_parse()
     exit
     ;;
   esac
-  # [ $MDDEBUG ] && echo DEBUG
   # [ $MDDEBUG ] && echo DEBUG rawpage: $RAWPAGE
   # export "$RAWPAGE"
-  [ $MDDEBUG ] && echo 
-  PAGES=$(echo $RAWPAGE | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
+  PAGES=$(echo $RAWPAGE | grep class\=\'pagination | sed 's/[<>]/\n/g' | grep \#mods | grep -oP '^\D*\d+\D*\K\d+' | sort | tail -1 )
+  # PAGES=$(echo $RAWPAGE | grep class\=\'pagination | sed 's/[<>]/\n/g' | grep \#mods | tail -n 1 | sed 's/*page\=//' | grep -oP '^\D*\d+\D*\K\d+' )
+  # PAGES=$(echo $RAWPAGE | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
   # PAGES=$(echo $RAWPAGE | sed 's/a class/\n/g' | grep "&gt;&gt;" | tail -n1 | cut -d = -f7 - | cut -d \# -f1 -)
   # TOFIX - last search page - site is inconsistent on order of page= links on page
-  [ $MDDEBUG ] && echo DEBUG pages: $PAGES
+  [ $MDDEBUG ] && echo DEBUG pages detected: $PAGES
+  [ $MDDEBUG ] && echo 
 }
 
 
