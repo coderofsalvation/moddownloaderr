@@ -329,23 +329,26 @@ fi
 
 LOOP="true"
 if [ -z $RANDOMSONG ]; then
-  echo "Creating download playlist"
+  echo "Creating download playlist.."
   create_playlist
   [ $MDDEBUG ] && echo DEBUG playlist file: $PLAYLISTFILE
   TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
   echo "There are ${TRACKSFOUND} tracks in the playlist to download"
+  [ $MDDEBUG ] && echo
+  TFLEN=${#TRACKSFOUND} 
+  [ $MDDEBUG ] && echo DEBUG tracks found number columns: $TFLEN
+  # [ $MDDEBUG ] && [ $PAGES ] && TFCALC=$(echo "scale=1; ${TRACKSFOUND}/40" | bc) && echo -n "DEBUG pages should be: " && echo $((`echo ${TFCALC} | cut -f1 -d"."` + 1 ))
 fi
 
-[ $MDDEBUG ] && echo DEBUG modpath: $MODPATH
-[ $MDDEBUG ] && echo DEBUG tracksmmaxnum: $TRACKSMAXNUM
-[ $MDDEBUG ] && echo DEBUG press enter to start downloads
+[ $MDDEBUG ] && echo DEBUG tracksmaxnum: $TRACKSMAXNUM
+[ $MDDEBUG ] && echo && echo DEBUG press enter to start downloads
 [ $MDDEBUG ] && read
 
 COUNTER=1
 while [ $LOOP = "true" ]; do
   if [ -z $RANDOMSONG ]; then
     SONGURL=$(cat ${PLAYLISTFILE} | head -n ${COUNTER} | tail -n 1)
-    echo -n $COUNTER
+    printf "%0${TFLEN}d" $COUNTER
     let COUNTER=$COUNTER+1
     [ $TRACKSFOUND -gt 0 ] && [ $COUNTER -gt $TRACKSFOUND ] && LOOP="false"
   else
@@ -357,11 +360,11 @@ while [ $LOOP = "true" ]; do
 
   MODFILE=$(echo "$SONGURL" | cut -d "#" -f 2)
   if [ ! -e "${MODPATH}/${MODFILE}" ]; then
-    echo "/$TRACKSFOUND Downloading $SONGURL to $MODPATH/$MODFILE";
+    echo "/$TRACKSFOUND - Downloading $SONGURL to $MODPATH/$MODFILE";
     wget -o /dev/null -O "${MODPATH}/${MODFILE}" "$SONGURL";
     let TRACKSCOUNTER=$TRACKSCOUNTER+1
     [ $TRACKSCOUNTER -eq $TRACKSMAXNUM ] && echo && echo $TRACKSMAXNUM tracks downloaded as requested - exiting now... && LOOP="false"
   elif [ -e "${MODPATH}/${MODFILE}" ]; then
-    echo "/$TRACKSFOUND - File already exists - '${MODPATH}/${MODFILE}'"
+    echo "/$TRACKSFOUND - File already exists as ${MODPATH}/${MODFILE}"
   fi
 done
