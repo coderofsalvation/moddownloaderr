@@ -136,7 +136,7 @@ create_playlist()
   PLAYLIST=""
   PLAYLISTFILE=/tmp/moddownloaderr/moddownloaderr.url
   # TODO implement moddownloaderr instance specific download playlists
-  
+
   if [ -z "$PAGES" ]; then
     PLAYLIST=$(wget -o /dev/null -O - "${MODURL}" | grep href | sed 's/href=/\n/g' | sed 's/>/\n/g' | grep downloads.php | sed 's/\"//g' | sed 's/'\''//g'|cut -d " " -f 1| uniq)
   else
@@ -177,19 +177,19 @@ pages_parse()
   # PAGES=$(echo $RAWPAGE | grep class\=\'pagination | sed 's/[<>]/\n/g' | grep \#mods | tail -n 1 | sed 's/*page\=//' | grep -oP '^\D*\d+\D*\K\d+' )
   # PAGES=$(echo $RAWPAGE | sed 's/[<>]/\n/g' | grep "page=" | tail -n 1 | sed 's/page=/\n/' | tail -n 1 | cut -d "#" -f 1)
   # PAGES=$(echo $RAWPAGE | sed 's/a class/\n/g' | grep "&gt;&gt;" | tail -n1 | cut -d = -f7 - | cut -d \# -f1 -)
-  # TOFIX - last search page - site is inconsistent on order of page= links on page
   [ $MDDEBUG ] && echo DEBUG pages detected: $PAGES
-  [ $MDDEBUG ] && echo 
+  [ $MDDEBUG ] && echo
 }
 
 
 set_modpath()
 {
+  [ $MDDEBUG ] && echo
   CURRENTPATH=$(pwd)
   echo "Where do you want to save the mods?"
   read -p "> " -e -i $CURRENTPATH MODPATH
   echo Download path has been set to: $MODPATH
-  [ $MDDEBUG ] && echo 
+  [ $MDDEBUG ] && echo
 }
 
 
@@ -308,7 +308,7 @@ do
         done
       fi
       [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM
-      echo You have selected to download: ${possiblegenres[$GENRENUM]} && echo
+      echo You have selected to download: ${possiblegenres[$GENRENUM]}
       set_modpath
       MODURL="http://modarchive.org/index.php?query=${GENRENUM}&request=search&search_type=genre"
       pages_parse
@@ -329,13 +329,13 @@ fi
 
 LOOP="true"
 if [ -z $RANDOMSONG ]; then
-  echo "Creating download playlist.."
+  echo "Creating download queue playlist.."
   create_playlist
   [ $MDDEBUG ] && echo DEBUG playlist file: $PLAYLISTFILE
   TRACKSFOUND=$(wc -l ${PLAYLISTFILE} | cut -d " " -f 1)
-  echo "There are ${TRACKSFOUND} tracks in the playlist to download"
+  echo "There are ${TRACKSFOUND} tracks in the download queue"
   [ $MDDEBUG ] && echo
-  TFLEN=${#TRACKSFOUND} 
+  TFLEN=${#TRACKSFOUND}
   [ $MDDEBUG ] && echo DEBUG tracks found number columns: $TFLEN
   # [ $MDDEBUG ] && [ $PAGES ] && TFCALC=$(echo "scale=1; ${TRACKSFOUND}/40" | bc) && echo -n "DEBUG pages should be: " && echo $((`echo ${TFCALC} | cut -f1 -d"."` + 1 ))
 fi
