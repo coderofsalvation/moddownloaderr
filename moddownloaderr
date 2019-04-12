@@ -43,7 +43,8 @@ Mod Downloaderr options:
   -h               Show this help message
   -n <number>      Optionally cap the total number of tracks to download
   -s <section>     Download from selected section: Can be one of this
-       uploads     This is a list of the recent member upload activity
+       uploads     This is a list of the recent member upload activity, 80 files
+       new         Same a uploads but using search engine, 150 files
        featured    These modules have been nominated by the crew for either
                      outstanding quality, technique or creativity (or
                      combination of).
@@ -52,7 +53,6 @@ Mod Downloaderr options:
        downloads   The top 1000 most downloaded modules, recorded since circa
                      2002.
        topscore    This chart lists the most revered modules on the archive.
-       new         Same than uploads but using search engine
        random      Ramdom module from entire archive
    -a <artist>     Search in artist database
    -m <module>     Search in module database (Title and Filename)
@@ -223,33 +223,41 @@ do
     s)
       case $OPTARG in
         uploads)
-          PAGES=
+          echo Program mode: uploads - latest 80 uploads
+          set_modpath
+          MODURL="http://modarchive.org/index.php?request=view_actions_uploads"
+          pages_parse
+          ;;
+        new)
+          echo Program mode: new - latest 150 uploads
+          set_modpath
+          MODURL="http://modarchive.org/index.php?request=search&search_type=new_additions"
+          pages_parse
           ;;
         featured)
+          echo Program mode: featured
           set_modpath
+          MODURL="http://modarchive.org/index.php?request=view_chart&query=featured"
           pages_parse
           ;;
         favourites)
+          echo Program mode: top favourites
           set_modpath
           MODURL="http://modarchive.org/index.php?request=view_top_favourites"
           pages_parse
           ;;
         downloads)
+          echo Program mode: top downloads
           set_modpath
           MODURL="http://modarchive.org/index.php?request=view_chart&query=tophits"
           pages_parse
           ;;
         topscore)
+          echo Program mode: top score
           set_modpath
           MODURL="http://modarchive.org/index.php?request=view_chart&query=topscore"
           pages_parse
           ;;
-        new)
-          set_modpath
-          MODURL="http://modarchive.org/index.php?request=search&search_type=new_additions"
-          pages_parse
-          ;;
-
         random)
           set_modpath
           RANDOMSONG="true"
