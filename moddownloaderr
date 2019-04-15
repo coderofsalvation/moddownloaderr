@@ -58,6 +58,7 @@ Mod Downloaderr options:
    -m <module>     Search in module database (Title and Filename)
    -g [<genrenum>] Download a specific genre. Either enter the modarchive.org
                      genres number, or select from a list.
+   -d              Enable debug message output.
 
 Hint: Use + symbol instead blankspaces in search strings.
 
