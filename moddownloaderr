@@ -305,7 +305,7 @@ do
         while [ -z "${possiblegenres[$GENRENUM]}" ]
         do
           read -p "> " GENRENUM
-          [ -z ${possiblegenres[$GENRENUM]} ] && printf '\e[A\e[K'
+          [ -z "${possiblegenres[$GENRENUM]}" ] && printf '\e[A\e[K'
         done
       fi
       [ $MDDEBUG ] && echo DEBUG genrenum: $GENRENUM
