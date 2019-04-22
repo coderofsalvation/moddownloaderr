@@ -189,6 +189,7 @@ set_modpath()
   CURRENTPATH=$(pwd)
   echo "Where do you want to save the mods?"
   read -p "> " -e -i $CURRENTPATH MODPATH
+  mkdir -p "$MODPATH"
   echo Download path has been set to: $MODPATH
   [ $MDDEBUG ] && echo
 }
