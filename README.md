@@ -3,6 +3,10 @@
 ### History
 Based on the modarchive script by Fernando Sancho AKA 'toptnc' - https://github.com/toptnc/modarchive, modifications by Justin Wierbonski aka Demonic Sweaters - https://github.com/demonicsweaters/moddownloader, and updates by Milk Brewster - https://github.com/mxmilkb/moddownloaderr
 
+0.2 - the initial fork and basic clean-up
+0.3 - mostly about fixing genre downloads
+0.4 - a major bugfix and further polishing
+
 ### Install 
 Required packages:
 * wget
