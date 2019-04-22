@@ -22,7 +22,7 @@
 ###############################################################################
 
 # Exit script on any error
-set +e
+set -e
 
 # Configuration file overrides defaults
 if [ -f "$HOME/.config/moddownloaderr/moddownloaderrrc" ]; then
