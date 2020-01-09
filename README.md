@@ -1,7 +1,7 @@
 `moddownloaderr` - a bash script that downloads tracker created module music files (.mod, .med, .xm, .it, .s3m) from modarchive.org. You can use various category or search criteria, as well as save locations for each download session, or set the maximum number of tracks to download. This is a quick way to get a huge mod library on your computer.
 
 ### History
-Based on the modarchive script by Fernando Sancho AKA 'toptnc' - https://github.com/toptnc/modarchive, modifications by Justin Wierbonski aka Demonic Sweaters - https://github.com/demonicsweaters/moddownloader, and updates by Milk Brewster - https://github.com/mxmilkb/moddownloaderr
+Based on the modarchive script by Fernando Sancho AKA 'toptnc' - https://github.com/toptnc/modarchive, modifications by Justin Wierbonski aka Demonic Sweaters - https://github.com/demonicsweaters/moddownloader, and updates by Milkii Brewster - https://github.com/mxmilkb/moddownloaderr
 
 ### Install 
 Required packages:
