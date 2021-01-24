@@ -20,7 +20,7 @@ Quick setup:
 ```
 mkdir ~/bin
 cd ~/bin
-git clone https://github.com/mxmilkb/moddownloaderr
+git clone https://github.com/mxmilkiib/moddownloaderr
 ln -s moddownloaderr/moddownloaderr
 ```
 
